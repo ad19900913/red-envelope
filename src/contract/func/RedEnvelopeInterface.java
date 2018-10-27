@@ -15,10 +15,15 @@ public interface RedEnvelopeInterface {
 
     Nuls snatchRedEnvelope(@Required Long id);
 
-    @View
-    RedEnvelopeEntity queryRedEnvelopeInfo(@Required Long id);
+    void retrieveRedEnvelope(@Required Long id);
 
     @View
-    List<String> allRedEnvelopeInfo();
+    RedEnvelopeEntity detailInfo(@Required Long id);
+
+    @View
+    Boolean availableInfo(@Required Long id);
+
+    @View
+    List<String> allInfo();
 
 }

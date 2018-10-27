@@ -70,8 +70,8 @@ public class Nuls {
 
     @Override
     public String toString() {
-        return "Nuls{" +
-                "value=" + value +
-                '}';
+        return "{\"Nuls\":{"
+                + "\"value\":\"" + value + "\""
+                + "}}";
     }
 }

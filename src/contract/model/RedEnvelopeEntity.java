@@ -4,13 +4,15 @@ import contract.event.SnatchRedEnvelopeEvent;
 import contract.util.Nuls;
 import io.nuls.contract.sdk.Address;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * 红包实体类
+ */
 public class RedEnvelopeEntity {
     private Long id;
     private Address sponsor;
+    private Long initialHeight = 0L;
     private Nuls amount = Nuls.ZERO;
     private Nuls balance = Nuls.ZERO;
     private Byte parts = 0;
@@ -18,6 +20,14 @@ public class RedEnvelopeEntity {
     private String remark = "Winer Winer Chicken Dinner!";
     private Boolean available = true;
     private Map<Address, SnatchRedEnvelopeEvent> map;
+
+    public Long getInitialHeight() {
+        return initialHeight;
+    }
+
+    public void setInitialHeight(Long initialHeight) {
+        this.initialHeight = initialHeight;
+    }
 
     public Nuls getBalance() {
         return balance;
@@ -100,6 +110,8 @@ public class RedEnvelopeEntity {
 
         if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
         if (sponsor != null ? !sponsor.equals(entity.sponsor) : entity.sponsor != null) return false;
+        if (initialHeight != null ? !initialHeight.equals(entity.initialHeight) : entity.initialHeight != null)
+            return false;
         if (amount != null ? !amount.equals(entity.amount) : entity.amount != null) return false;
         if (balance != null ? !balance.equals(entity.balance) : entity.balance != null) return false;
         if (parts != null ? !parts.equals(entity.parts) : entity.parts != null) return false;
@@ -113,6 +125,7 @@ public class RedEnvelopeEntity {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (sponsor != null ? sponsor.hashCode() : 0);
+        result = 31 * result + (initialHeight != null ? initialHeight.hashCode() : 0);
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
         result = 31 * result + (parts != null ? parts.hashCode() : 0);
@@ -125,16 +138,17 @@ public class RedEnvelopeEntity {
 
     @Override
     public String toString() {
-        return "RedEnvelopeEntity{" +
-                "id=" + id +
-                ", sponsor=" + sponsor +
-                ", amount=" + amount +
-                ", balance=" + balance +
-                ", parts=" + parts +
-                ", random=" + random +
-                ", remark='" + remark + '\'' +
-                ", available=" + available +
-                ", map=" + map +
-                '}';
+        return "{\"RedEnvelopeEntity\":{"
+                + "\"id\":\"" + id + "\""
+                + ", \"sponsor\":" + sponsor
+                + ", \"initialHeight\":\"" + initialHeight + "\""
+                + ", \"amount\":" + amount
+                + ", \"balance\":" + balance
+                + ", \"parts\":\"" + parts + "\""
+                + ", \"random\":\"" + random + "\""
+                + ", \"remark\":\"" + remark + "\""
+                + ", \"available\":\"" + available + "\""
+                + ", \"map\":" + map
+                + "}}";
     }
 }
