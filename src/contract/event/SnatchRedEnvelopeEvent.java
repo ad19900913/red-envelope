@@ -33,6 +33,15 @@ public class SnatchRedEnvelopeEvent implements Event {
         this.nuls = nuls;
     }
 
+    public SnatchRedEnvelopeEvent() {
+    }
+
+    public SnatchRedEnvelopeEvent(Long id, Address snatcher, Nuls nuls) {
+        this.id = id;
+        this.snatcher = snatcher;
+        this.nuls = nuls;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,5 +1,6 @@
 package contract;
 
+import contract.event.NewRedEnvelopeEvent;
 import contract.event.SnatchRedEnvelopeEvent;
 import contract.func.RedEnvelopeInterface;
 import contract.model.RedEnvelopeEntity;
@@ -19,7 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static contract.func.RedEnvelopeConstant.UNAVAILABLE_HEIGHT;
+import static contract.func.RedEnvelopeConstant.*;
+import static io.nuls.contract.sdk.Utils.emit;
 import static io.nuls.contract.sdk.Utils.require;
 
 /**
@@ -42,10 +44,12 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
      */
     @Payable
     @Override
-    public void newRedEnvelope(@Required Byte parts, @Required Boolean random, String remark) {
+    public Long newRedEnvelope(@Required Byte parts, @Required Boolean random, String remark) {
         require(parts > 0, "parts must larger than 0");
+        require(MAX.larger(Nuls.valueOf(Msg.value().longValue())), "Msg.value() too big");
+        require(MIN.smaller(Nuls.valueOf(Msg.value().longValue())), "Msg.value() too small");
         Nuls money = Nuls.valueOf(Msg.value().longValue());
-        require(Nuls.MIN_TRANSFER.value() <= money.divide(parts).value(), "parts must larger than money/min_transfer");
+        require(parts >= money.divide(Nuls.MIN_TRANSFER).value(), "parts must larger than money/min_transfer");
         Long id = count++;
         RedEnvelopeEntity entity = new RedEnvelopeEntity();
         entity.setId(id);
@@ -60,6 +64,8 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
         }
         entity.setSponsor(Msg.sender());
         map.put(id, entity);
+        emit(new NewRedEnvelopeEvent(Block.number(), Msg.sender(), entity));
+        return id;
     }
 
     @Override
@@ -69,7 +75,7 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
         require(entity.getAvailable(), "The specified RedEnvelope is not available");
         require(entity.getMap().get(Msg.sender()) == null, "each address can only snatch one RedEnvelope once");
         require(Block.number() - entity.getInitialHeight() < UNAVAILABLE_HEIGHT, "timeout");
-        return RedEnvelopeManager.process(entity, Msg.sender());
+        return RedEnvelopeManager.snatch(entity, Msg.sender());
     }
 
     @Override

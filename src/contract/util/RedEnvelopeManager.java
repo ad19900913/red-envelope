@@ -11,7 +11,7 @@ import static io.nuls.contract.sdk.Utils.*;
 
 public class RedEnvelopeManager {
 
-    public static Nuls process(RedEnvelopeEntity entity, Address sender) {
+    public static Nuls snatch(RedEnvelopeEntity entity, Address sender) {
         Nuls nuls = Nuls.ZERO;
         if (entity.getParts() - entity.getMap().size() == 1) {
             nuls = entity.getBalance();
@@ -19,8 +19,10 @@ public class RedEnvelopeManager {
             if (entity.getRandom()) {
                 int remain = entity.getParts() - entity.getMap().size();
                 Nuls expect = entity.getBalance().divide(remain);
-                int mod = (int) expect.multiply(2).divide(Nuls.MIN_TRANSFER).value();
-                int random = pseudoRandom((int) Block.timestamp());
+                int mod1 = (int) expect.multiply(2).divide(Nuls.MIN_TRANSFER).value();
+                int mod2 = (int) entity.getBalance().minus(Nuls.MIN_TRANSFER.multiply(remain - 1)).divide(Nuls.MIN_TRANSFER).value();
+                int mod = Math.min(mod1, mod2);
+                int random = pseudoRandom(sender.toString() + Block.timestamp() + entity.getId());
                 nuls = Nuls.MIN_TRANSFER.multiply(random % mod);
             } else {
                 nuls = entity.getAmount().divide(entity.getParts());
@@ -36,7 +38,7 @@ public class RedEnvelopeManager {
         if (entity.getMap().size() == entity.getParts()) {
             entity.setAvailable(false);
         }
-
+        emit(event);
         sender.transfer(BigInteger.valueOf(nuls.value()));
         return nuls;
     }

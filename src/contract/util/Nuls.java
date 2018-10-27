@@ -48,6 +48,13 @@ public class Nuls {
         return Nuls.valueOf(this.value / value);
     }
 
+    public boolean larger(Nuls na){
+        return  this.value > na.value;
+    }
+
+    public boolean smaller(Nuls na){
+        return  this.value < na.value;
+    }
 
     public long value() {
         return value;

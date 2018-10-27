@@ -7,16 +7,16 @@ import io.nuls.contract.sdk.Address;
 import java.util.Map;
 
 /**
- * 红包实体类
+ * model
  */
 public class RedEnvelopeEntity {
-    private Long id;
+    private Long id;//primary key
     private Address sponsor;
     private Long initialHeight = 0L;
     private Nuls amount = Nuls.ZERO;
     private Nuls balance = Nuls.ZERO;
     private Byte parts = 0;
-    private Boolean random = true;
+    private Boolean random = true;//Decide whether or not the red envelope is Shared equally
     private String remark = "Winer Winer Chicken Dinner!";
     private Boolean available = true;
     private Map<Address, SnatchRedEnvelopeEvent> map;

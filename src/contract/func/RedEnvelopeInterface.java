@@ -11,7 +11,7 @@ import java.util.List;
 public interface RedEnvelopeInterface {
 
     @Payable
-    void newRedEnvelope(@Required Byte parts, @Required Boolean random, String remark);
+    Long newRedEnvelope(@Required Byte parts, @Required Boolean random, String remark);
 
     Nuls snatchRedEnvelope(@Required Long id);
 
