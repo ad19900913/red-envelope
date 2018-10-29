@@ -49,7 +49,7 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
         require(MAX.larger(Nuls.valueOf(Msg.value().longValue())), "Msg.value() too big");
         require(MIN.smaller(Nuls.valueOf(Msg.value().longValue())), "Msg.value() too small");
         Nuls money = Nuls.valueOf(Msg.value().longValue());
-        require(parts >= money.divide(Nuls.MIN_TRANSFER).value(), "parts must larger than money/min_transfer");
+        require(parts <= money.divide(Nuls.MIN_TRANSFER).value(), "parts must larger than money/min_transfer");
         Long id = count++;
         RedEnvelopeEntity entity = new RedEnvelopeEntity();
         entity.setId(id);
