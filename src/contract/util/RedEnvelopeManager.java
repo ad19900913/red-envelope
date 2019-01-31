@@ -9,10 +9,17 @@ import java.math.BigInteger;
 
 import static io.nuls.contract.sdk.Utils.*;
 
+/**
+ * Responsible for red envelope amount calculation
+ *
+ * @author captain
+ * @version 1.0
+ * @date 19-1-31 下午12:51
+ */
 public class RedEnvelopeManager {
 
     public static Nuls snatch(RedEnvelopeEntity entity, Address sender) {
-        Nuls nuls = Nuls.ZERO;
+        Nuls nuls;
         if (entity.getParts() - entity.getMap().size() == 1) {
             nuls = entity.getBalance();
         } else {
@@ -22,7 +29,8 @@ public class RedEnvelopeManager {
                 int mod1 = (int) expect.multiply(2).divide(Nuls.MIN_TRANSFER).value();
                 int mod2 = (int) entity.getBalance().minus(Nuls.MIN_TRANSFER.multiply(remain - 1)).divide(Nuls.MIN_TRANSFER).value();
                 int mod = Math.min(mod1, mod2);
-                int random = pseudoRandom(sender.toString() + Block.timestamp() + entity.getId());
+                BigInteger randomSeed = getRandomSeed(Block.number(), 100);
+                long random = randomSeed.longValue() + entity.getMap().size();
                 nuls = Nuls.MIN_TRANSFER.multiply(random % mod);
             } else {
                 nuls = entity.getAmount().divide(entity.getParts());
