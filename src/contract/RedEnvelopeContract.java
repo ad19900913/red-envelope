@@ -94,6 +94,7 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
     public RedEnvelopeEntity detailInfo(@Required Long id) {
         RedEnvelopeEntity entity = map.get(id);
         require(entity != null, "The specified RedEnvelope not exists");
+        require(entity.getMap().containsKey(Msg.sender()), "Only those who have grabbed the red envelope can view the red envelope details.");
         return entity;
     }
 
@@ -102,10 +103,7 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
     public Boolean availableInfo(@Required Long id) {
         RedEnvelopeEntity entity = map.get(id);
         require(entity != null, "The specified RedEnvelope not exists");
-        if (Block.number() - entity.getInitialHeight() > UNAVAILABLE_HEIGHT) {
-            return false;
-        }
-        return true;
+        return Block.number() - entity.getInitialHeight() <= UNAVAILABLE_HEIGHT;
     }
 
     @View

@@ -29,9 +29,10 @@ public class RedEnvelopeManager {
                 int mod1 = (int) expect.multiply(2).divide(Nuls.MIN_TRANSFER).value();
                 int mod2 = (int) entity.getBalance().minus(Nuls.MIN_TRANSFER.multiply(remain - 1)).divide(Nuls.MIN_TRANSFER).value();
                 int mod = Math.min(mod1, mod2);
-                BigInteger randomSeed = getRandomSeed(Block.number(), 100);
-                long random = randomSeed.longValue() + entity.getMap().size();
-                nuls = Nuls.MIN_TRANSFER.multiply(random % mod);
+                BigInteger randomSeed = getRandomSeed(Block.number() - 1, 100);
+                randomSeed = randomSeed.add(new BigInteger(String.valueOf(entity.getMap().size())));
+                BigInteger integer = randomSeed.mod(new BigInteger(String.valueOf(mod)));
+                nuls = Nuls.MIN_TRANSFER.multiply(integer.intValue());
             } else {
                 nuls = entity.getAmount().divide(entity.getParts());
             }
