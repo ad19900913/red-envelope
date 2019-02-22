@@ -6,10 +6,7 @@ import contract.func.RedEnvelopeInterface;
 import contract.model.RedEnvelopeEntity;
 import contract.util.Nuls;
 import contract.util.RedEnvelopeManager;
-import io.nuls.contract.sdk.Address;
-import io.nuls.contract.sdk.Block;
-import io.nuls.contract.sdk.Contract;
-import io.nuls.contract.sdk.Msg;
+import io.nuls.contract.sdk.*;
 import io.nuls.contract.sdk.annotation.Payable;
 import io.nuls.contract.sdk.annotation.Required;
 import io.nuls.contract.sdk.annotation.View;
@@ -94,7 +91,7 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
     public RedEnvelopeEntity detailInfo(@Required Long id) {
         RedEnvelopeEntity entity = map.get(id);
         require(entity != null, "The specified RedEnvelope not exists");
-        require(entity.getMap().containsKey(Msg.sender()), "Only those who have grabbed the red envelope can view the red envelope details.");
+        require(entity.getAvailable(), "The red envelope must be robbed over before you can view the details.");
         return entity;
     }
 
