@@ -91,7 +91,7 @@ public class RedEnvelopeContract implements Contract, RedEnvelopeInterface {
     public RedEnvelopeEntity detailInfo(@Required Long id) {
         RedEnvelopeEntity entity = map.get(id);
         require(entity != null, "The specified RedEnvelope not exists");
-        require(entity.getAvailable(), "The red envelope must be robbed over before you can view the details.");
+        require(!entity.getAvailable(), "The red envelope must be robbed over before you can view the details.");
         return entity;
     }
 
