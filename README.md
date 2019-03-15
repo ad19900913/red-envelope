@@ -85,3 +85,7 @@ Here are some configuration and logical information
     则抢到红包金额期望expect = M / N;
     红包金额波动区间（MIN，2*expect），并且红包剩余金额必须>(剩余份数*MIN)
 
+todo
+1.增加密码红包功能，发布红包者可以设置红包密码
+2.实现红包列表分页展示机制
+3.参考微信群，考虑设置红包群，这样只有群里的人可以抢这个红包，就可以不设置密码。

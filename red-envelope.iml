@@ -17,5 +17,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="sdk-contract-vm-1.1.4.6" level="project" />
   </component>
 </module>
